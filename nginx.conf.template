@@ -1,0 +1,42 @@
+#user  nobody;
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+
+
+http {
+    include       mime.types;
+    include      /etc/nginx/naxsi_core.rules;
+    default_type  application/octet-stream;
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    gzip  on;
+
+    server {
+         proxy_set_header  Proxy-Connection "";
+         listen            *:80;
+         access_log  /var/log/nginx/naxsi_access.log;
+         error_log  /var/log/nginx/naxsi_error.log debug;
+
+         location / {
+              include           /etc/nginx/naxsi.rules;
+              proxy_pass        ${PROXY_URL};
+              proxy_set_header  Host ${PROXY_HEADER};
+         }
+         location /RequestDenied {
+             return 406;
+         }
+     }
+
+
+}
