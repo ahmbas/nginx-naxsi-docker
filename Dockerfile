@@ -1,7 +1,7 @@
 FROM centos:7
 
-ADD http://nginx.org/download/nginx-1.14.0.tar.gz /tmp/nginx-source/
-ADD https://github.com/nbs-system/naxsi/archive/master.tar.gz /tmp/naxsi-source/
+COPY nginx-1.14.0.tar.gz /tmp/nginx-source/
+COPY master.tar.gz /tmp/naxsi-source/
 RUN cd /tmp/nginx-source/ && tar -zxvf nginx-1.14.0.tar.gz
 RUN cd /tmp/naxsi-source/ && tar -zxvf master.tar.gz
 
